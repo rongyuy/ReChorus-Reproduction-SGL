@@ -1,10 +1,17 @@
-.ipynb_checkpoints/
-*.xlsx
-.idea/
+# 忽略数据集
+data/
+dataset/
+*.csv
+*.txt
+
+# 忽略模型权重文件
+checkpoints/
+models/
+*.pth
+*.pt
+*.ckpt
+
+# 忽略日志和缓存
+logs/
 __pycache__/
-.DS_Store
-*.pyc
-figure/
-doc/
-model/
-search.py
+*.log

@@ -16,8 +16,17 @@ from models.context import *
 from models.context_seq import *
 from models.reranker import *
 from utils import utils
+import numpy as np
+import logging
 
-
+if not hasattr(np, 'float'):
+    np.float = float
+if not hasattr(np, 'int'):
+    np.int = int
+if not hasattr(np, 'bool'):
+    np.bool = bool
+if not hasattr(np, 'object'):
+    np.object = object
 def parse_global_args(parser):
 	parser.add_argument('--gpu', type=str, default='0',
 						help='Set CUDA_VISIBLE_DEVICES, default for CPU only')

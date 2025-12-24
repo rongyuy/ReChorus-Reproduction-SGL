@@ -21,5 +21,5 @@ class POP(GeneralModel):
         self.check_list = []
         i_ids = feed_dict['item_id']  # [batch_size, -1]
         prediction = self.popularity[i_ids.cpu().data.numpy()]
-        prediction = torch.from_numpy(prediction).to(self.device)
+        prediction = torch.from_numpy(prediction).to(self.device).float()
         return {'prediction': prediction.view(feed_dict['batch_size'], -1)}
