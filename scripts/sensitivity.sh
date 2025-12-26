@@ -2,7 +2,7 @@
 
 # 固定参数
 dataset="Grocery_and_Gourmet_Food"
-gpu_id="1"
+gpu_id="0"
 
 echo "=== 开始参数敏感性分析: SimGCL on ${dataset} ==="
 
@@ -34,4 +34,16 @@ do
         --early_stop 10
 done
 
-# 注意: lam=0.1, eps=0.1 的组合你之前应该跑过了，可以直接复用那个数据，不用重跑。
+# 注意: lam=0.1, eps=0.1 的组合之前跑过了，可以直接复用那个数据，不用重跑。
+
+# --- DirectAU 敏感性分析 (已修正) ---
+echo "=== 开始参数敏感性分析: DirectAU on ${dataset} ==="
+
+for gam in 0.5 1.0 2.0 5.0 10.0; do
+    echo ">>> Sensitivity: Grocery | DirectAU | Gamma=${gam}"
+    python src/main.py \
+        --model_name DirectAU --dataset ${dataset} \
+        --emb_size 64 --lr 0.001 --l2 1e-4 --gamma ${gam} \
+        --batch_size 2048 --epochs 50 --gpu ${gpu_id} \
+        --test_all 0 --save_final_results 0
+done

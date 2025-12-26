@@ -1,154 +1,112 @@
-![logo](./docs/_static/logo2.0.png)
+# 机器学习课程大作业 - 基于 ReChorus 的 SimGCL 算法复现
+
+本项目基于 [ReChorus 2.0](https://github.com/THUwangcy/ReChorus) 框架，复现了 **SimGCL (Simple Graph Contrastive Learning)** 推荐算法，并与 BPRMF, BUIR, NeuMF, POP 等基准模型进行了对比实验。
+
 ---
 
-![PyPI - Python Version](https://img.shields.io/badge/pyhton-3.10-blue) 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-![GitHub repo size](https://img.shields.io/github/repo-size/THUwangcy/ReChorus) 
-[![arXiv](https://img.shields.io/badge/arXiv-ReChorus-%23B21B1B)](https://arxiv.org/abs/2405.18058)
+## 🛠️ 环境依赖 (Environment)
 
+本项目代码基于 Python 3.10 开发。请确保您的运行环境已安装 Python 3.10+。
 
-ReChorus2.0 is a modular and task-flexible PyTorch library for recommendation, especially for research purpose. It aims to provide researchers a flexible framework to implement various recommendation tasks, compare different algorithms, and adapt to diverse and highly-customized data inputs. We hope ReChorus2.0 can serve as a more convinient and user-friendly tool for researchers, so as to form a "Chorus" of recommendation tasks and algorithms.
-
-The previous version of ReChorus can be found at [ReChorus1.0](https://github.com/THUwangcy/ReChorus/tree/ReChorus1.0)
-
-## What's New in ReChorus2.0:
-
-- **New Tasks**: Newly supporting the context-aware top-k recommendation and CTR prediction task. Newly supporting the Impression-based re-ranking task.
-- **New Models**: Adding Context-aware Recommenders and Impression-based Re-ranking Models. Listed below.
-- **New dataset format**: Supporting various contextual feature input. Customizing candidate item lists in training and evaluation. Supporting variable length positive and negative samples.
-- **Task Flexible**: Each model can serve for different tasks, and task switching is conveniently achieved by altering *model mode*.
-  
-
-This framework is especially suitable for researchers to choose or implement desired experimental settings, and compare algorithms under the same setting. The characteristics of our framework can be summarized as follows:
-
-- **Modular**: primary functions modularized into distinct components: runner, model, and reader, facilitating code comprehension and integration of new features.
-  
-- **Swift**: concentrate on your model design ***in a single file*** and implement new models quickly.
-
-- **Efficient**: multi-thread batch preparation, special implementations for the evaluation, and around 90% GPU utilization during training for deep models.
-
-- **Flexible**: implement new readers or runners for different datasets and experimental settings, and each model can be assigned with specific helpers.
-
-## Structure
-
-Generally, ReChorus decomposes the whole process into three modules:
-
-- [Reader](https://github.com/THUwangcy/ReChorus/tree/master/src/helpers/BaseReader.py): read dataset into DataFrame and append necessary information to each instance
-- [Runner](https://github.com/THUwangcy/ReChorus/tree/master/src/helpers/BaseRunner.py): control the training process and model evaluation, including evaluation metrics.
-- [Model](https://github.com/THUwangcy/ReChorus/tree/master/src/models/BaseModel.py): define how to generate output (predicted labels or ranking scores) and prepare batches.
-
-![logo](./docs/_static/module_new.png)
-
-## Requirements & Getting Started
-See in the doc for [Requirements & Getting Started](https://github.com/THUwangcy/ReChorus/tree/master/docs/Getting_Started.md).
-
-## Tasks & Settings
-
-The tasks & settings are listed below
-
-<table>
-<tr><th> Tasks </th><th> Runner </th><th> Metrics </th><th> Loss Functions</th><th> Reader </th><th> BaseModel </th><th> Models</th><th> Model Modes </th></tr>
-<tr><td rowspan="3"> Top-k Recommendation </td><td rowspan="3"> BaseRunner </td><td rowspan="3"> HitRate NDCG </td><td rowspan="3"> BPR </td><td> BaseReader </td><td> BaseModel.GeneralModel </td><td> general </td><td> '' </td></tr>
-<tr><td> SeqReader </td><td> BaseModel.SequentialModel </td><td> sequential </td><td> '' </td></tr>
-<tr><td> ContextReader </td><td> BaseContextModel.ContextModel </td><td> context </td><td> 'TopK' </td></tr>
-<tr><td> CTR Prediction </td><td> CTRRunner </td><td> AUC Logloss </td><td> BPR, BCE </td><td> ContextReader </td><td> BaseContextModel.ContextCTRModel </td><td> context </td><td> 'CTR' </td></tr>
-<tr><td rowspan="4"> Impression-based Ranking </td><td rowspan="4"> ImpressionRunner </td><td rowspan="4"> HitRate NDCG MAP </td><td rowspan="4"> List-level BPR, Listnet loss, Softmax cross entropy loss, Attention rank </td><td> ImpressionReader </td><td> BaseImpressionModel.ImpressionModel </td><td> general </td><td> 'Impression' </td></tr>
-<tr><td> ImpressionSeqReader </td><td> BaseImpressionModel.ImpressionSeqModel </td><td> sequential </td><td> 'Impression' </td></tr>
-<tr><td> ImpressionReader </td><td> BaseRerankerModel.RerankModel </td><td> reranker </td><td> 'General' </td></tr>
-<tr><td> ImpressionSeqReader </td><td> BaseRerankerModel.RerankSeqModel </td><td> reranker </td><td> 'Sequential' </td></tr>
-</table>
-
-
-## Arguments
-See in the doc for [Main Arguments](https://github.com/THUwangcy/ReChorus/tree/master/docs/Main_Arguments.md).
-
-## Models
-See in the doc for [Supported Models](https://github.com/THUwangcy/ReChorus/tree/master/docs/Supported_Models.md).
-
-Experimental results and corresponding configurations are shown in [Demo Script Results](https://github.com/THUwangcy/ReChorus/tree/master/docs/demo_scripts_results/README.md).
-
-
-## Citation
-
-**If you find ReChorus is helpful to your research, please cite either of the following papers. Thanks!**
-
-```
-@inproceedings{li2024rechorus2,
-  title={ReChorus2. 0: A Modular and Task-Flexible Recommendation Library},
-  author={Li, Jiayu and Li, Hanyu and He, Zhiyu and Ma, Weizhi and Sun, Peijie and Zhang, Min and Ma, Shaoping},
-  booktitle={Proceedings of the 18th ACM Conference on Recommender Systems},
-  pages={454--464},
-  year={2024}
-}
-```
-```
-@inproceedings{wang2020make,
-  title={Make it a chorus: knowledge-and time-aware item modeling for sequential recommendation},
-  author={Wang, Chenyang and Zhang, Min and Ma, Weizhi and Liu, Yiqun and Ma, Shaoping},
-  booktitle={Proceedings of the 43rd International ACM SIGIR Conference on Research and Development in Information Retrieval},
-  pages={109--118},
-  year={2020}
-}
-```
-```
-@article{王晨阳2021rechorus,
-  title={ReChorus: 一个综合, 高效, 易扩展的轻量级推荐算法框架},
-  author={王晨阳 and 任一 and 马为之 and 张敏 and 刘奕群 and 马少平},
-  journal={软件学报},
-  volume={33},
-  number={4},
-  pages={0--0},
-  year={2021}
-}
-```
-
-This is also our public implementation for the following papers (codes and datasets to reproduce the results can be found at corresponding branch):
-
-
-- *Chenyang Wang, Min Zhang, Weizhi Ma, Yiqun Liu, and Shaoping Ma. [Make It a Chorus: Knowledge- and Time-aware Item Modeling for Sequential Recommendation](http://www.thuir.cn/group/~mzhang/publications/SIGIR2020Wangcy.pdf). In SIGIR'20.*
+### 1. 安装依赖
+请在项目根目录下运行以下命令安装所需库：
 
 ```bash
-git clone -b SIGIR20 https://github.com/THUwangcy/ReChorus.git
+pip install -r requirements.txt
+
 ```
 
-- *Chenyang Wang, Weizhi Ma, Min Zhang, Chong Chen, Yiqun Liu, and Shaoping Ma. [Towards Dynamic User Intention: Temporal Evolutionary Effects of Item Relations in Sequential Recommendation](https://chenchongthu.github.io/files/TOIS-KDA-wcy.pdf). In TOIS'21.*
+### 2. 数据集准备
+
+所有实验数据已预处理并存放于 `data/` 目录下，无需额外下载或处理：
+
+* `Grocery_and_Gourmet_Food`
+* `MIND_Large`
+* `MovieLens_1M`
+
+---
+
+## 🚀 运行指南 (How to Run)
+
+**注意**：所有命令请在 **项目根目录** 下执行。
+
+### 1. 复现 SimGCL (主模型)
+
+我们在 `scripts/SimGCL.sh` 中配置了三个数据集的实验参数。您可以直接运行脚本，或单独运行以下命令：
+
+**方式一：运行脚本 (推荐)**
 
 ```bash
-git clone -b TOIS21 https://github.com/THUwangcy/ReChorus.git
+bash scripts/SimGCL.sh
+
 ```
 
-- *Chenyang Wang, Weizhi Ma, Chong, Chen, Min Zhang, Yiqun Liu, and Shaoping Ma. [Sequential Recommendation with Multiple Contrast Signals](https://dl.acm.org/doi/pdf/10.1145/3522673). In TOIS'22.*
+**方式二：手动运行单条命令 (以 Grocery 数据集为例)**
 
 ```bash
-git clone -b TOIS22 https://github.com/THUwangcy/ReChorus.git
+python src/main.py \
+    --model_name SimGCL \
+    --dataset Grocery_and_Gourmet_Food \
+    --batch_size 2048 \
+    --gpu 0 \
+    --lr 0.001 \
+    --l2 1e-5 \
+    --emb_size 64 \
+    --n_layers 2 \
+    --eps 0.1 \
+    --tau 0.2 \
+    --early_stop 15 \
+    --test_all 0
+
 ```
 
-- *Chenyang Wang, Zhefan Wang, Yankai Liu, Yang Ge, Weizhi Ma, Min Zhang, Yiqun Liu, Junlan Feng, Chao Deng, and Shaoping Ma. [Target Interest Distillation for Multi-Interest Recommendation](). In CIKM'22.*
+> **⚠️ 关于 GPU 的提示**：
+> 脚本中默认使用的 GPU0 运行（即 `--gpu 0`），如有需要可进行 GPU 编号的修改
+> 
+> 
+
+### 2. 复现 Baselines (基准模型)
+
+我们提供了 `scripts/baselines.sh` 脚本来一键运行所有对比模型（BPRMF, BUIR, NeuMF, POP）。
 
 ```bash
-git clone -b CIKM22 https://github.com/THUwangcy/ReChorus.git
+bash scripts/baselines.sh
+
 ```
 
-## Contact
+该脚本会依次在三个数据集上运行各个基准模型。
 
-**ReChorus 1.0**: Chenyang Wang (THUwangcy@gmail.com)
+### 3. 参数敏感性分析 (可选)
 
-**ReChorus 2.0**: Jiayu Li (lijiayu997@gmail.com), Hanyu Li (l-hy12@outlook.com)
+如果需要查看 SimGCL模型的`lambda` 和 `epsilon` 参数以及DirectAU模型的`gamma`参数的分析结果，请运行：
 
-<!-- MARKDOWN LINKS & IMAGES -->
+```bash
+bash scripts/sensitivity.sh
 
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+```
 
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
+---
+
+## 📂 目录结构说明
+
+```text
+.
+├── data/                 # 预处理后的数据集
+├── src/                  # 源代码
+│   ├── models/           # 模型定义 (SimGCL 代码位于 src/models/general/SimGCL.py)
+│   ├── helpers/          # 数据读取与训练流程控制
+│   └── main.py           # 程序入口
+├── scripts/              # 实验运行脚本 (.sh 文件)
+├── requirements.txt      # 环境依赖
+└── README.md             # 说明文档
+
+```
+
+## 📊 实验结果查看
+
+程序运行结束后，关键指标（HitRate@K, NDCG@K）将直接输出在 **控制台终端**。
+如果脚本中设置了 `--save_final_results 1`，结果摘要也会保存在 csv 文件中。
+
+---
+
+**助教老师如有任何运行问题，请随时联系我们。感谢您的评阅！**

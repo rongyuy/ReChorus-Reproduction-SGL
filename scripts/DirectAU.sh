@@ -16,7 +16,7 @@ python src/main.py \
     --batch_size 2048 \
     --gamma 0.3 \
     --lr 0.001 \
-    --l2 1e-6 \
+    --l2 1e-4 \
     --epochs 500 \
     --gpu 0 \
     --test_all 0 \
@@ -28,7 +28,7 @@ python src/main.py \
     --batch_size 2048 \
     --gamma 0.3 \
     --lr 0.001 \
-    --l2 1e-6 \
+    --l2 1e-5 \
     --epochs 500 \
     --gpu 0 \
     --test_all 0 \
