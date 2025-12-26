@@ -17,12 +17,17 @@ pip install -r requirements.txt
 ```
 
 ### 2. 数据集准备
+由于部分数据集处理后体积较大，本项目仅直接提供了 **Grocery_and_Gourmet_Food** 的完整预处理数据。
 
-所有实验数据已预处理并存放于 `data/` 目录下，无需额外下载或处理：
+对于 **MIND_Large** 和 **MovieLens_1M** 数据集，我们在对应目录下提供了数据预处理脚本（`.ipynb`）。
 
-* `Grocery_and_Gourmet_Food`
-* `MIND_Large`
-* `MovieLens_1M`
+**如何生成其余数据：**
+如果您希望复现这两个数据集的实验结果，请按以下步骤操作：
+
+1.  下载对应的原始数据集（如果未包含在包中）。
+2.  运行 `data/{DatasetName}/` 目录下的处理脚本（如 `preprocess.ipynb`）。
+3.  确保生成的 `.csv` 或 `.pkl` 文件位于对应目录下。
+4.  执行训练脚本。
 
 ---
 
