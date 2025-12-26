@@ -6,7 +6,7 @@ dataset/
 
 # 忽略模型权重文件
 checkpoints/
-models/
+/models/
 *.pth
 *.pt
 *.ckpt
